@@ -153,7 +153,7 @@ class Pd::Teachercon1819Registration < ActiveRecord::Base
 
     # some fields are required based on the type of the associated application
 
-    if pd_application.application_type === "Teacher"
+    if pd_application && pd_application.application_type === "Teacher"
       requireds.concat [
         :teacher_accept_seat
       ]
