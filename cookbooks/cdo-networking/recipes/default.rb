@@ -1,5 +1,2 @@
-# Enable enhanced networking for EC2 instances.
-if node[:ec2]
-  apt_package 'linux-aws'
-  include_recipe 'ixgbevf'
-end
+# Only apply recipe to EC2 instances.
+include_recipe 'ixgbevf' if node[:ec2]

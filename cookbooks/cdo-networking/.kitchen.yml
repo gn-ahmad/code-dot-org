@@ -1,19 +1,20 @@
 ---
 driver:
-  name: dokken
-  chef_version: 12.7.2
+  name: docker
+  use_sudo: false
 transport:
-  name: dokken
+  name: sftp
+  connection_timeout: 10
+  connection_retries: 5
 provisioner:
-  name: dokken
+  name: chef_zero
+  require_chef_omnibus: 12.7.2
 platforms:
   - name: ubuntu-14.04
-    driver:
-      image: dokken/ubuntu-14.04
-      pid_one_command: /sbin/init
-    run_list:
-      - recipe[apt]
-suites:
-  - name: default
+    image_search:
+      owner-id: "099720109477" # Official Ubuntu
+      name: ubuntu/images/*/ubuntu-trusty
     run_list:
       - recipe[cdo-networking]
+suites:
+  - name: default
