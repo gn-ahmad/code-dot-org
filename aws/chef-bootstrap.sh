@@ -74,6 +74,7 @@ ${CHEF_CLIENT} -v
 mkdir -p /etc/chef
 CLIENT_RB=/etc/chef/client.rb
 cat <<RUBY > ${CLIENT_RB}
+log_level :info
 node_name '${NODE_NAME}'
 environment '${ENVIRONMENT}'
 chef_repo_path '${CHEF_REPO_PATH}'
