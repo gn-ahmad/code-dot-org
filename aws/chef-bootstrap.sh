@@ -63,6 +63,7 @@ exec 2>&1
 
 CHEF_CLIENT=/opt/chef/bin/chef-client
 CHEF_REPO_PATH=/var/chef
+CHEF_DEBUG_LOG=/var/log/chef-bootstrap-debug.log
 # Ensure correct version of Chef is installed.
 if [ "$(${CHEF_CLIENT} -v)" != "Chef: ${CHEF_VERSION}" ]; then
   curl -L https://omnitruck.chef.io/install.sh | bash -s -- -v ${CHEF_VERSION}
@@ -74,6 +75,7 @@ ${CHEF_CLIENT} -v
 mkdir -p /etc/chef
 CLIENT_RB=/etc/chef/client.rb
 cat <<RUBY > ${CLIENT_RB}
+add_formatter :doc, '${CHEF_DEBUG_LOG}'
 log_level :info
 node_name '${NODE_NAME}'
 environment '${ENVIRONMENT}'
@@ -149,4 +151,4 @@ else
 fi
 
 # Run chef-client.
-${CHEF_CLIENT} -c ${CLIENT_RB} -j ${FIRST_BOOT} --force-formatter
+${CHEF_CLIENT} -c ${CLIENT_RB} -j ${FIRST_BOOT}
