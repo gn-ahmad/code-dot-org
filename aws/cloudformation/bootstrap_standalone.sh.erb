@@ -79,9 +79,6 @@ jq "." <<JSON > $FIRST_BOOT
     }
   },
   "cdo-secrets": {
-<% if local_mode %>
-    "build_apps": true,
-<% end %>
 <% unless cdn_enabled -%>
     "cdn_enabled": false,
 <% end -%>
