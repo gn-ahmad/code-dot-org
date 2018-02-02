@@ -12,7 +12,6 @@ without = rack_envs - [env.to_sym]
 cores = ENV['SPROCKETS_DERAILLEUR_WORKER_COUNT'] || node['cpu']['total']
 env = {
   'BUNDLE_WITHOUT' => without.join(':'),
-  'BUNDLE_GEMFILE' => "#{root}/Gemfile",
   'BUNDLE_JOBS' => cores.to_s,
   # Ignore any existing 'remembered options' in favor of the provided environment.
   # Ref:
@@ -27,14 +26,13 @@ directory(env['BUNDLE_APP_CONFIG']) {owner user; group user}
 
 # Export bundler environment to global config ($HOME/.bundle/config).
 # Used in case we run 'bundle' manually without the provided environment.
-# TODO disabled for now because it breaks cookbooks/ 'bundle install' from CI script.
-# directory("#{home}/.bundle") { owner user; group user }
-#
-# file "#{home}/.bundle/config" do
-#   owner user
-#   group user
-#   content env.to_yaml
-# end
+directory("#{home}/.bundle") {owner user; group user}
+
+file "#{home}/.bundle/config" do
+  owner user
+  group user
+  content env.to_yaml
+end
 
 execute 'bundle-install' do
   command 'bundle install'
