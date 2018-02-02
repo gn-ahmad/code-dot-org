@@ -271,5 +271,3 @@ gem 'sort_alphabetical', github: 'grosser/sort_alphabetical'
 gem 'StreetAddress', require: "street_address"
 
 gem 'recaptcha', require: 'recaptcha/rails'
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false

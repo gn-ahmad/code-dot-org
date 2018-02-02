@@ -225,8 +225,6 @@ GEM
     bindata (2.3.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.1.8)
-      msgpack (~> 1.0)
     bootstrap-sass (2.3.2.2)
       sass (~> 3.2)
     builder (3.2.3)
@@ -460,7 +458,6 @@ GEM
       ruby-progressbar
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    msgpack (1.2.2)
     multi_json (1.12.1)
     multi_test (0.1.2)
     multi_xml (0.5.5)
@@ -782,7 +779,6 @@ DEPENDENCIES
   bcrypt
   better_errors
   binding_of_caller
-  bootsnap (>= 1.1.0)
   bootstrap-sass (~> 2.3.2.2)
   cancancan (~> 1.15.0)
   chromedriver-helper (~> 0.0.7)
