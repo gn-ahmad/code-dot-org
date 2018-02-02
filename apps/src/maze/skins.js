@@ -8,8 +8,7 @@
 // look: Colour of sonar-like look icon.
 
 import skinsBase from '../skins';
-
-import _ from 'lodash';
+import { randomValue } from '../utils';
 
 var CONFIGS = {
   letters: {
@@ -95,7 +94,7 @@ var CONFIGS = {
     look: '#000',
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
-    background: 'background' + _.sample([0, 1, 2, 3]) + '.png',
+    background: 'background' + randomValue([0, 1, 2, 3]) + '.png',
     dirtSound: true,
     pegmanYOffset: -8,
     danceOnLoad: true
@@ -114,7 +113,7 @@ var CONFIGS = {
     look: '#000',
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
-    background: 'background' + _.sample([0, 1, 2, 3]) + '.png',
+    background: 'background' + randomValue([0, 1, 2, 3]) + '.png',
     pegmanYOffset: -8,
     danceOnLoad: true
   },
