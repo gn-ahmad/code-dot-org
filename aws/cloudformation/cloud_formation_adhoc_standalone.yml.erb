@@ -24,7 +24,7 @@ unless dry_run
   update_bootstrap_script.call
 end
 
-iam_instance_profile = stack_name == 'staging-next' ? 'StagingInstanceProfile' : 'StandaloneFrontendInstanceProfile'
+iam_instance_profile = stack_name == 'staging-next' ? 'StagingInstanceProfile' : 'StandaloneInstanceProfile'
 -%>
 ---
 AWSTemplateFormatVersion: 2010-09-09
