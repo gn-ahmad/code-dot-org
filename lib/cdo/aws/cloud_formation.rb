@@ -47,7 +47,9 @@ module AWS
       end
 
       def stack_name
-        (ENV['STACK_NAME'] || CDO.stack_name || "#{rack_env}#{rack_env != branch && "-#{branch}"}").gsub(STACK_NAME_INVALID_REGEX, '-')
+        name = ENV['STACK_NAME'] || CDO.stack_name
+        name += "-#{branch}" if name == 'adhoc'
+        name.gsub(STACK_NAME_INVALID_REGEX, '-')
       end
 
       # CNAME prefix to use for this stack.
