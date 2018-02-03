@@ -81,7 +81,7 @@ namespace :build do
         else
           ChatClient.log 'Seeding <b>dashboard</b>...'
           ChatClient.log 'consider setting "skip_seed_all" in locals.yml if this is taking too long' if rack_env?(:development)
-          RakeUtils.rake 'seed:all'
+          RakeUtils.rake rack_env?(:adhoc, :development) ? 'seed:incremental' : 'seed:all'
         end
 
         # Commit dsls.en.yml changes on staging
