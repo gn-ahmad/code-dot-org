@@ -669,6 +669,7 @@ module Pd::Application
 
     # @override
     # Filter out extraneous answers based on selected program (course)
+    # @returns [Array] label keys to keep
     def self.filtered_labels(course)
       labels_to_remove = (course == 'csd' ?
         [
@@ -690,7 +691,7 @@ module Pd::Application
       # so we add it when we construct the csv row.
       labels_to_remove.push(:school, :school_name, :school_address, :school_type, :school_city, :school_state, :school_zip_code)
 
-      ALL_LABELS_WITH_OVERRIDES.except(*labels_to_remove)
+      ALL_LABELS_WITH_OVERRIDES.keys - labels_to_remove
     end
 
     # @override

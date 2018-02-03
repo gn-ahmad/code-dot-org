@@ -420,6 +420,7 @@ module Pd::Application
 
     # @override
     # Filter out extraneous answers, based on selected program (course)
+    # @returns [Array] label keys to keep
     def self.filtered_labels(course)
       labels_to_remove = (course == 'csf' ?
         [:csd_csp_fit_availability, :csd_csp_teachercon_availability]
@@ -427,7 +428,7 @@ module Pd::Application
         [:csf_availability, :csf_partial_attendance_reason]
       )
 
-      ALL_LABELS_WITH_OVERRIDES.except(*labels_to_remove)
+      ALL_LABELS_WITH_OVERRIDES.keys - labels_to_remove
     end
 
     # @override
