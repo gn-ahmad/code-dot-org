@@ -24,11 +24,33 @@ INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 NODE_NAME=<%=node_name%>
 RESOURCE_ID=<%=resource_id%>
 
+<% unless @load_balancer -%>
+# Fetch acmesmith-provisioned SSL certificate and key from S3
+aws configure set s3.signature_version s3v4
+S3_PATH=s3://$S3_BUCKET/ssl/certs/$SUBDOMAIN
+CURRENT=$S3_PATH/$(aws s3 cp $S3_PATH/current -)
+CERT=$(aws s3 cp $CURRENT/cert.pem -)
+CHAIN=$(aws s3 cp $CURRENT/chain.pem -)
+KEY=$(aws s3 cp $CURRENT/key.pem -)
+<% end -%>
 # Customize Chef configuration.
 FIRST_BOOT=/etc/chef/first-boot.json
 mkdir -p $(dirname $FIRST_BOOT)
 cat <<JSON > $FIRST_BOOT
 {
+<% unless @load_balancer -%>
+  "cdo-nginx": {
+    "ssl_cert": {
+      "content": "$CERT"
+    },
+    "ssl_chain": {
+      "content": "$CHAIN"
+    },
+    "ssl_key": {
+      "content": "$KEY"
+    }
+  },
+<% end -%>
   "cdo-repository": {
     <% if commit %>
       "revision": "<%=commit%>",
@@ -43,11 +65,16 @@ cat <<JSON > $FIRST_BOOT
     "redis_read_addresses": "${GeocoderGroup.ReadEndPoint.Addresses}",
     "redis_read_ports": "${GeocoderGroup.ReadEndPoint.Ports}",
 <% end -%>
-<% if environment == :adhoc && TEMPLATE == 'cloud_formation_stack.yml.erb' -%>
+<% if TEMPLATE == 'cloud_formation_stack.yml.erb' && @database -%>
     "db_writer": "mysql://${DatabaseUsername}:${DatabasePassword}@${Database.Endpoint.Address}:${Database.Endpoint.Port}/",
 <% end -%>
 <% unless cdn_enabled -%>
     "cdn_enabled": false,
+<% end -%>
+<% if rack_env?(:adhoc) -%>
+    "image_optim": false,
+    "override_dashboard": "dashboard-<%=subdomain%>",
+    "override_pegasus": "<%=subdomain%>",
 <% end -%>
     "stack_name": "$STACK"
   },

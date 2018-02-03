@@ -29,6 +29,8 @@ Note: Consumes AWS resources until `adhoc:stop` is called.'
 
   namespace :full_stack do
     task :environment do
+      ENV['FRONTENDS'] = '1'
+      ENV['DATABASE'] = '1'
       ENV['TEMPLATE'] = 'cloud_formation_stack.yml.erb'
       ENV['CDN_ENABLED'] = '1'
     end
