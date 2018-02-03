@@ -78,7 +78,6 @@ module AWS
       ACM_REGION = 'us-east-1'.freeze
       def certificate_arn
         Aws::ACM::Client.new(region: ACM_REGION).
-          end
         list_certificates(certificate_statuses: ['ISSUED']).
           certificate_summary_list.
           find {|cert| cert.domain_name == "*.#{DOMAIN}" || cert.domain_name == DOMAIN}.
