@@ -18,9 +18,6 @@ frontends = %i(production adhoc).include?(rack_env)
 @frontends = frontends
 require 'cdo/cron'
 
-# Branch off existing AMI for adhoc.
-image_id = rack_env?(:adhoc) ? adhoc_image_id : IMAGE_ID
-
 self.log_resource_filter.push %w(FrontendLaunchConfig ASGCount)
 
 # Don't provision daemon where manually-provisioned daemon instances already exist.
@@ -63,7 +60,7 @@ Resources:
   WebServerAMI:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: <%=image_id%>
+      ImageId: <%=IMAGE_ID%>
       InstanceType: !Ref InstanceType
       IamInstanceProfile: !ImportValue IAM-FrontendInstanceProfile
       SecurityGroupIds: [!ImportValue VPC-FrontendSecurityGroup]
@@ -466,7 +463,7 @@ Resources:
       ResourceSignal:
         Timeout: PT2H
     Properties:
-      ImageId: <%=image_id%>
+      ImageId: <%=IMAGE_ID%>
       InstanceType: !Ref InstanceType
       IamInstanceProfile: !ImportValue IAM-<%=environment == :adhoc ? 'Frontend' : 'Staging'%>InstanceProfile
       KeyName: <%=SSH_KEY_NAME%>
