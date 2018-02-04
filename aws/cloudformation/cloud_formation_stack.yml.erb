@@ -7,16 +7,17 @@ To specify an alternate branch name, run `rake stack:start branch=BRANCH`.'
 end
 
 commit = ENV['COMMIT'] || `git ls-remote origin #{branch}`.split.first
-
 ami = commit[0..4]
-unless dry_run
-  update_cookbooks.call
-  update_bootstrap_script.call
-end
 
 frontends = @frontends = rack_env?(:production) || ENV['FRONTENDS']
 database = @database = ENV['DATABASE']
 load_balancer = @load_balancer = !rack_env?(:adhoc)
+
+unless dry_run
+  update_certs.call unless load_balancer
+  update_cookbooks.call
+  update_bootstrap_script.call
+end
 
 require 'cdo/cron'
 
